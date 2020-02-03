@@ -1,2 +1,5 @@
-# dcl204-2020-feb-03
-DCL-204: Java SE 8 Programming
+# DCL-204: Java SE 8 Programming
+
+These projects are created as part of the following training: DCL-204 "Java SE 8 Programming"
+
+Please follow the link for the complete training catalog: https://www.deepcloudlabs.com/resources
