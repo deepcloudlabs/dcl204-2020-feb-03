@@ -5,7 +5,6 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 /**
  * 
@@ -40,8 +39,7 @@ public class Bank {
 	}
 
 	public Customer createCustomer(String identityNo, String fullName) {
-		Optional<Customer> customer = 
-				getCustomer8(identityNo);
+		Optional<Customer> customer = getCustomer8(identityNo);
 		if (customer.isPresent())
 			return customer.get();
 		Customer cust = new Customer(identityNo, fullName);
@@ -56,26 +54,18 @@ public class Bank {
 	}
 
 	public Customer getCustomer(String identityNo) {
-		for(Customer cust : customers)
-			if(cust.getIdentityNo().equals(identityNo))
+		for (Customer cust : customers)
+			if (cust.getIdentityNo().equals(identityNo))
 				return cust;
 		return null;
 	}
-	
+
 	public Optional<Customer> getCustomer8(String identityNo) {
-		return customers.stream().filter(customer->customer.getIdentityNo().equals(identityNo)).findFirst();
+		return customers.stream().filter(customer -> customer.getIdentityNo().equals(identityNo)).findFirst();
 	}
-	
+
 	public Optional<Customer> getRichestCustomer() {
-		return customers.stream()
-			.sorted(
-			    Comparator.comparing(Customer::getBalance)
-			        .reversed()
-			).findFirst();
+		return customers.stream().sorted(Comparator.comparing(Customer::getBalance).reversed()).findFirst();
 	}
 
 }
-
-
-
-

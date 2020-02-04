@@ -10,6 +10,7 @@ import com.example.banking.entity.CheckingAccount;
  * @author Binnur Kurt <binnur.kurt@gmail.com>
  *
  */
+@SuppressWarnings("unused")
 public class StudyPolymorphism {
 
 	public static void main(String[] args) {
