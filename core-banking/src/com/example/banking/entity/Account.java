@@ -7,7 +7,7 @@ package com.example.banking.entity;
  */
 public class Account {
 	private final String iban;
-	private double balance;
+	double balance;
 
 	public Account(String iban, double balance) {
 		this.iban = iban;
