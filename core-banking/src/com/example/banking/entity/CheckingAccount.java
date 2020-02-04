@@ -23,12 +23,13 @@ public class CheckingAccount extends Account {
 
 	@Override
 	public boolean withdraw(double amount) {
-		if (amount<=0.) return false;
-		if (amount>(balance+overdraftAmount))
+		System.out.println("CheckingAccount::withdraw");
+		if (amount <= 0.)
+			return false;
+		if (amount > (balance + overdraftAmount))
 			return false;
 		this.balance -= amount;
 		return true;
 	}
-	
-	
+
 }

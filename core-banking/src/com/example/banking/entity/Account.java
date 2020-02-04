@@ -5,7 +5,7 @@ package com.example.banking.entity;
  * @author Binnur Kurt <binnur.kurt@gmail.com>
  *
  */
-public class Account {
+public class Account extends Object {
 	private final String iban;
 	double balance;
 
@@ -14,11 +14,11 @@ public class Account {
 		this.balance = balance;
 	}
 
-	public String getIban() {
+	public final String getIban() {
 		return iban;
 	}
 
-	public double getBalance() {
+	public final double getBalance() {
 		return balance;
 	}
 
@@ -31,6 +31,7 @@ public class Account {
 	}
 
 	public boolean withdraw(double amount) {
+		System.out.println("Account::withdraw");
 		// validation
 		if (amount <= 0)
 			return false;
