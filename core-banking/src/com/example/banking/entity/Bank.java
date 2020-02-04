@@ -39,18 +39,32 @@ public class Bank {
 
 	public Customer createCustomer(
 			String identityNo,String fullName) {
-		return null;
+		Optional<Customer> customer = 
+				getCustomer(identityNo);
+		if(customer.isPresent()) return null;
+		Customer cust = new Customer(identityNo, fullName);
+		customers.add(cust);
+		return cust;
 	}
 	public Optional<Customer> removeCustomer(
             String identityNo){
-         return Optional.empty();
+		 Optional<Customer> customer = 
+				getCustomer(identityNo);
+		 customer.ifPresent(
+				 cust -> customers.remove(cust));
+         return customer;
     }
 	public Optional<Customer> getCustomer(
 			                     String identityNo){
-		return Optional.empty();
+		return customers.stream()
+				.filter(cust -> cust.getIdentityNo()
+						       .equals(identityNo))
+				.findFirst();
 	}
 	
 	public double getBalance() {
-		return 0;
+		return customers.stream()
+				  .mapToDouble(Customer::getBalance)
+				  .sum();
 	}
 }
