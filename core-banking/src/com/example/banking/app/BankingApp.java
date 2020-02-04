@@ -1,6 +1,8 @@
 package com.example.banking.app;
 
 import java.util.List;
+import java.util.Optional;
+import java.util.function.Consumer;
 
 import com.example.banking.entity.Account;
 import com.example.banking.entity.Customer;
@@ -27,6 +29,20 @@ public class BankingApp {
 //		accts.add(new Account("TR5",5_000));
 		for (Account account : accts)
 			System.out.println(account);
-		jack.getAccount("TR6").ifPresent(a -> a.withdraw(500));
+
+		Consumer<Account> withdraw500 = 
+				 a -> a.withdraw(500);
+		Optional<Account> account = 
+				jack.getAccount("TR6");
+		account.ifPresent( withdraw500 );
+		if(account.isPresent())
+			account.get().withdraw(500);
+		System.out.println(jack.getBalance8());
 	}
 }
+
+
+
+
+
+
