@@ -1,7 +1,6 @@
 package com.example;
 
 import java.text.DecimalFormat;
-import java.text.DecimalFormatSymbols;
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
 import java.time.format.FormatStyle;
@@ -14,18 +13,16 @@ import java.util.Locale;
  */
 public class StudyDateAndCurrencyFormatter {
 
+	@SuppressWarnings("unused")
 	public static void main(String[] args) {
 		ZonedDateTime now = ZonedDateTime.now();
 		Locale tr = new Locale("tr");
-		DateTimeFormatter dtf = 
-			DateTimeFormatter
-				.ofLocalizedDateTime(FormatStyle.FULL)
+		DateTimeFormatter dtf = DateTimeFormatter.ofLocalizedDateTime(FormatStyle.FULL)
 				.withLocale(Locale.SIMPLIFIED_CHINESE);
 		System.out.println(dtf.format(now));
 
 		double money = 12_345.67;
-		DecimalFormat df = (DecimalFormat) 
-				DecimalFormat.getCurrencyInstance(Locale.ITALY);
+		DecimalFormat df = (DecimalFormat) DecimalFormat.getCurrencyInstance(Locale.ITALY);
 //		DecimalFormatSymbols dfs = DecimalFormatSymbols.getInstance(tr);
 //		dfs.setCurrencySymbol("\u20BA");
 //		df.setDecimalFormatSymbols(dfs);
