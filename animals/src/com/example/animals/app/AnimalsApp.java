@@ -40,6 +40,7 @@ public class AnimalsApp {
 		System.out.println(totalLegs);
 		long totalPets = animals.stream().filter(Pet.class::isInstance).count();
 		System.out.println(totalPets);
+		
 	}
 
 }
