@@ -15,8 +15,10 @@ class AccountTest {
 	void toStringContainsIbanAndBalance() {
 		Account acc = new Account("TR1", 1_000);
 		String str = acc.toString();
-		assertTrue(str.contains("iban="));
-		assertTrue(str.contains("balance="));
+		assertAll(
+		   () -> assertTrue(str.contains("iban=")),
+		   () -> assertTrue(str.contains("balance="))
+		);
 	}
 
 	@Test

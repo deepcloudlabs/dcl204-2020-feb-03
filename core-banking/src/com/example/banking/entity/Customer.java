@@ -82,4 +82,9 @@ public class Customer {
 		return acc;
 	}
 
+	@Override
+	public String toString() {
+		return "Customer [identityNo=" + identityNo + ", fullName=" + fullName + "]";
+	}
+
 }

@@ -8,6 +8,11 @@ package com.example.banking.entity;
 public class CheckingAccount extends Account {
 	private double overdraftAmount;
 
+	public CheckingAccount(String iban, double balance) {
+		super(iban, balance);
+		this.overdraftAmount = 500;
+	}
+
 	public CheckingAccount(String iban, double balance, double overdraftAmount) {
 		super(iban, balance);
 		this.overdraftAmount = overdraftAmount;
@@ -30,6 +35,12 @@ public class CheckingAccount extends Account {
 			return false;
 		this.balance -= amount;
 		return true;
+	}
+
+	@Override
+	public String toString() {
+		return "CheckingAccount [overdraftAmount=" + overdraftAmount + ", balance=" + balance + ", iban="
+				+ getIban() + "]";
 	}
 
 }
