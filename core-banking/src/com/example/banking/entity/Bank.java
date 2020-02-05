@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
+import java.util.Locale;
 import java.util.Optional;
 
 /**
@@ -68,4 +69,16 @@ public final class Bank {
 		return customers.stream().sorted(Comparator.comparing(Customer::getBalance).reversed()).findFirst();
 	}
 
+	public void generateReport(Locale locale) {
+		//TODO: Generate report header
+		// This report is generated at {0}.
+		
+		//TODO: Generate number of customers
+		// There are {0} customers.
+		
+		//TODO: for each customer, 
+		// print customer identity, fullname and 
+		// total balance (currency).
+		
+	}
 }
