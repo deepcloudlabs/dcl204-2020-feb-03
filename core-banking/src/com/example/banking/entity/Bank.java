@@ -11,7 +11,7 @@ import java.util.Optional;
  * @author Binnur Kurt <binnur.kurt@gmail.com>
  *
  */
-public class Bank {
+public final class Bank {
 	private final int id;
 	private String name;
 	private final List<Customer> customers;

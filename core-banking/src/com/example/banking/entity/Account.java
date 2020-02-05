@@ -8,10 +8,25 @@ package com.example.banking.entity;
 public class Account extends Object {
 	private final String iban;
 	double balance;
+	private static int numOfAccounts = 0;
+	private AccountStatus status;
+
+	public static int getNumOfAccounts() {
+		return numOfAccounts;
+	}
+
+	public AccountStatus getStatus() {
+		return status;
+	}
+
+	public void setStatus(AccountStatus status) {
+		this.status = status;
+	}
 
 	public Account(String iban, double balance) {
 		this.iban = iban;
 		this.balance = balance;
+		numOfAccounts++;
 	}
 
 	public final String getIban() {
@@ -22,7 +37,7 @@ public class Account extends Object {
 		return balance;
 	}
 
-	public boolean deposit(double amount) {
+	public final boolean deposit(final double amount) {
 		// validation
 		if (amount <= 0)
 			return false;
@@ -30,7 +45,7 @@ public class Account extends Object {
 		return true;
 	}
 
-	public boolean withdraw(double amount) {
+	public boolean withdraw(final double amount) {
 		System.out.println("Account::withdraw");
 		// validation
 		if (amount <= 0)
