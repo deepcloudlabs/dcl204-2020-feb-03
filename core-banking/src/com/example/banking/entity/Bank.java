@@ -1,11 +1,18 @@
 package com.example.banking.entity;
 
+import java.text.DecimalFormat;
+import java.text.DecimalFormatSymbols;
+import java.text.MessageFormat;
+import java.time.ZonedDateTime;
+import java.time.format.DateTimeFormatter;
+import java.time.format.FormatStyle;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Locale;
 import java.util.Optional;
+import java.util.ResourceBundle;
 
 /**
  * 
@@ -70,15 +77,38 @@ public final class Bank {
 	}
 
 	public void generateReport(Locale locale) {
-		//TODO: Generate report header
-		// This report is generated at {0}.
-		
-		//TODO: Generate number of customers
-		// There are {0} customers.
-		
-		//TODO: for each customer, 
-		// print customer identity, fullname and 
-		// total balance (currency).
-		
+		ResourceBundle bundle = ResourceBundle.getBundle("messages", locale);
+		String header = bundle.getString("report.header");
+		String numOfCustomers = bundle.getString("report.numofcustomers");
+		generateReportHeader(locale, header);
+		generateCustomerNumbers(locale, numOfCustomers);
+		customers.forEach(customer -> reportCustomer(customer,locale));
+	}
+
+	private void generateReportHeader(Locale locale, String header) {
+		MessageFormat formatter = new MessageFormat(header, locale);
+		ZonedDateTime now = ZonedDateTime.now();
+		DateTimeFormatter dtf = DateTimeFormatter.ofLocalizedDateTime(FormatStyle.FULL).withLocale(locale);
+		System.out.println(formatter.format(new Object[] { dtf.format(now) }));
+	}
+
+	private void generateCustomerNumbers(Locale locale, String msg) {
+		MessageFormat formatter = new MessageFormat(msg, locale);
+		System.out.println(formatter.format(new Object[] { customers.size() }));
+	}
+	
+	public static void reportCustomer(Customer cust,Locale locale) {
+		DecimalFormat df = (DecimalFormat) DecimalFormat.getCurrencyInstance(locale);
+		if(locale.getCountry().equals("TR")) {
+			DecimalFormatSymbols dfs = DecimalFormatSymbols.getInstance(locale);
+			dfs.setCurrencySymbol("\u20BA");
+			df.setDecimalFormatSymbols(dfs);
+		}
+		System.out.println(
+				String.format("%11s %-16s %-16s", 
+					cust.getIdentityNo(),
+					cust.getFullName(),
+					df.format(cust.getBalance())
+					));
 	}
 }
