@@ -1,5 +1,7 @@
 package com.example.banking.entity;
 
+import com.example.banking.exception.InsufficientBalanceException;
+
 /**
  * 
  * @author Binnur Kurt <binnur.kurt@gmail.com>
@@ -26,15 +28,13 @@ public class CheckingAccount extends Account {
 		this.overdraftAmount = overdraftAmount;
 	}
 
-	@Override
-	public boolean withdraw(double amount) {
-		System.out.println("CheckingAccount::withdraw");
+	@Override 
+	public void withdraw(double amount) throws InsufficientBalanceException {
 		if (amount <= 0.)
-			return false;
+			throw new IllegalArgumentException("Amount cannot be negative!");
 		if (amount > (balance + overdraftAmount))
-			return false;
+			throw new InsufficientBalanceException("Your balance does not cover your expenses!",amount-balance-overdraftAmount);
 		this.balance -= amount;
-		return true;
 	}
 
 	@Override

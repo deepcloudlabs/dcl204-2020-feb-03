@@ -1,5 +1,7 @@
 package com.example.banking.entity;
 
+import com.example.banking.exception.InsufficientBalanceException;
+
 /**
  * 
  * @author Binnur Kurt <binnur.kurt@gmail.com>
@@ -37,24 +39,21 @@ public class Account extends Object {
 		return balance;
 	}
 
-	public final boolean deposit(final double amount) {
+	public final void deposit(final double amount) {
 		// validation
 		if (amount <= 0)
-			return false;
+			throw new IllegalArgumentException("Amount cannot be negative!");
 		this.balance = this.balance + amount;
-		return true;
 	}
 
-	public boolean withdraw(final double amount) {
-		System.out.println("Account::withdraw");
+	public void withdraw(final double amount) throws InsufficientBalanceException {
 		// validation
 		if (amount <= 0)
-			return false;
+			throw new IllegalArgumentException("Amount cannot be negative!");
 		// business rule
 		if (amount > balance)
-			return false;
+			throw new InsufficientBalanceException("Your balance does not cover your expenses!",amount-balance);
 		this.balance = this.balance - amount;
-		return true;
 	}
 
 	@Override

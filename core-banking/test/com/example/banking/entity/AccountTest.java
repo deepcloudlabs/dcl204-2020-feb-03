@@ -4,6 +4,8 @@ import static org.junit.jupiter.api.Assertions.*;
 
 import org.junit.jupiter.api.Test;
 
+import com.example.banking.exception.InsufficientBalanceException;
+
 /**
  * 
  * @author Binnur Kurt <binnur.kurt@gmail.com>
@@ -24,7 +26,8 @@ class AccountTest {
 	@Test
 	void withdrawWithNegativeAmount() {
 		Account acc = new Account("TR1", 1_000);
-		assertFalse(acc.withdraw(-1.0));
+		assertThrows(IllegalArgumentException.class,
+			() -> acc.withdraw(-1.0));
 		assertEquals(1_000, acc.getBalance());
 		assertEquals("TR1", acc.getIban());
 	}
@@ -32,15 +35,16 @@ class AccountTest {
 	@Test
 	void withdrawOverBalance() {
 		Account acc = new Account("TR1", 1_000);
-		assertFalse(acc.withdraw(1_001));
+		assertThrows(InsufficientBalanceException.class,
+				() -> acc.withdraw(1_001));
 		assertEquals(1_000, acc.getBalance());
 		assertEquals("TR1", acc.getIban());
 	}
 
 	@Test
-	void withdrawAllBalance() {
+	void withdrawAllBalance() throws Exception {
 		Account acc = new Account("TR1", 1_000);
-		assertTrue(acc.withdraw(1_000));
+		acc.withdraw(1_000);
 		assertEquals(0, acc.getBalance());
 		assertEquals("TR1", acc.getIban());
 	}
@@ -48,15 +52,16 @@ class AccountTest {
 	@Test
 	void depositWithNegativeAmount() {
 		Account acc = new Account("TR1", 1_000);
-		assertFalse(acc.deposit(-1.0));
+		assertThrows(IllegalArgumentException.class,
+				() -> acc.deposit(-1.0));	
 		assertEquals(1_000, acc.getBalance());
 		assertEquals("TR1", acc.getIban());
 	}
 
 	@Test
-	void depositWithPositiveAmount() {
+	void depositWithPositiveAmount() throws Exception {
 		Account acc = new Account("TR1", 1_000);
-		assertTrue(acc.deposit(1.0));
+		acc.deposit(1.0);
 		assertEquals(1_001, acc.getBalance());
 		assertEquals("TR1", acc.getIban());
 	}

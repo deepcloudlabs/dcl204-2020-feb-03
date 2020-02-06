@@ -4,6 +4,7 @@ import java.util.concurrent.ThreadLocalRandom;
 
 import com.example.banking.entity.Account;
 import com.example.banking.entity.CheckingAccount;
+import com.example.banking.exception.InsufficientBalanceException;
 
 /**
  * 
@@ -13,7 +14,7 @@ import com.example.banking.entity.CheckingAccount;
 @SuppressWarnings("unused")
 public class StudyPolymorphism {
 
-	public static void main(String[] args) {
+	public static void main(String[] args) throws InsufficientBalanceException {
 		Object o;
 		o = 42;
 		o = true;
@@ -27,7 +28,12 @@ public class StudyPolymorphism {
 		else
 			acc = new CheckingAccount("TR1", 1_000, 500);
 		System.out.println(acc.getClass().getName());
-		acc.withdraw(500);
+		try {
+			acc.withdraw(1501);
+		} catch (InsufficientBalanceException e) {
+			System.out.println(e.getMessage());
+			throw e;
+		}
 	}
 
 }
