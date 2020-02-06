@@ -7,6 +7,7 @@ package com.example;
  */
 public class StudyTryCatchFinally {
 
+	@SuppressWarnings("unused")
 	public static void main(String[] args) {
 		// Java SE 7: Try-with-resources
 		try (PreciousResource res1 = new PreciousResource(1);
