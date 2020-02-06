@@ -7,10 +7,11 @@ import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
 import java.time.format.FormatStyle;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.Comparator;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
+import java.util.Map;
 import java.util.Optional;
 import java.util.ResourceBundle;
 
@@ -22,12 +23,12 @@ import java.util.ResourceBundle;
 public final class Bank {
 	private final int id;
 	private String name;
-	private final List<Customer> customers;
+	private final Map<String, Customer> customers;
 
 	public Bank(int id, String name) {
 		this.id = id;
 		this.name = name;
-		customers = new ArrayList<>();
+		customers = new HashMap<>();
 	}
 
 	public String getName() {
@@ -43,37 +44,27 @@ public final class Bank {
 	}
 
 	public List<Customer> getCustomers() {
-		return Collections.unmodifiableList(customers);
+		return new ArrayList<>(customers.values());
 	}
 
 	public Customer createCustomer(String identityNo, String fullName) {
-		Optional<Customer> customer = getCustomer8(identityNo);
-		if (customer.isPresent())
-			return customer.get();
+		if (customers.containsKey(identityNo))
+			return customers.get(identityNo);
 		Customer cust = new Customer(identityNo, fullName);
-		customers.add(cust);
+		customers.put(identityNo, cust);
 		return cust;
 	}
 
 	public Optional<Customer> removeCustomer(String identityNo) {
-		Optional<Customer> customer = getCustomer8(identityNo);
-		customer.ifPresent(cust -> customers.remove(cust));
-		return customer;
+		return Optional.ofNullable(customers.remove(identityNo));
 	}
 
 	public Customer getCustomer(String identityNo) {
-		for (Customer cust : customers)
-			if (cust.getIdentityNo().equals(identityNo))
-				return cust;
-		return null;
-	}
-
-	public Optional<Customer> getCustomer8(String identityNo) {
-		return customers.stream().filter(customer -> customer.getIdentityNo().equals(identityNo)).findFirst();
+		return customers.get(identityNo);
 	}
 
 	public Optional<Customer> getRichestCustomer() {
-		return customers.stream().sorted(Comparator.comparing(Customer::getBalance).reversed()).findFirst();
+		return customers.values().stream().sorted(Comparator.comparing(Customer::getBalance).reversed()).findFirst();
 	}
 
 	public void generateReport(Locale locale) {
@@ -82,7 +73,7 @@ public final class Bank {
 		String numOfCustomers = bundle.getString("report.numofcustomers");
 		generateReportHeader(locale, header);
 		generateCustomerNumbers(locale, numOfCustomers);
-		customers.forEach(customer -> reportCustomer(customer,locale));
+		customers.values().forEach(customer -> reportCustomer(customer, locale));
 	}
 
 	private void generateReportHeader(Locale locale, String header) {
@@ -96,19 +87,15 @@ public final class Bank {
 		MessageFormat formatter = new MessageFormat(msg, locale);
 		System.out.println(formatter.format(new Object[] { customers.size() }));
 	}
-	
-	public static void reportCustomer(Customer cust,Locale locale) {
+
+	public static void reportCustomer(Customer cust, Locale locale) {
 		DecimalFormat df = (DecimalFormat) DecimalFormat.getCurrencyInstance(locale);
-		if(locale.getCountry().equals("TR")) {
+		if (locale.getCountry().equals("TR")) {
 			DecimalFormatSymbols dfs = DecimalFormatSymbols.getInstance(locale);
 			dfs.setCurrencySymbol("\u20BA");
 			df.setDecimalFormatSymbols(dfs);
 		}
-		System.out.println(
-				String.format("%11s %-16s %-16s", 
-					cust.getIdentityNo(),
-					cust.getFullName(),
-					df.format(cust.getBalance())
-					));
+		System.out.println(String.format("%11s %-16s %-16s", cust.getIdentityNo(), cust.getFullName(),
+				df.format(cust.getBalance())));
 	}
 }

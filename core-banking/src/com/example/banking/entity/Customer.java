@@ -1,10 +1,10 @@
 package com.example.banking.entity;
 
 import java.util.ArrayList;
-import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
-import java.util.stream.Stream;
 
 /**
  * 
@@ -14,12 +14,12 @@ import java.util.stream.Stream;
 public class Customer {
 	private final String identityNo;
 	private String fullName;
-	private final List<Account> accounts;
+	private final Map<String,Account> accounts;
 
 	public Customer(String identityNo, String fullName) {
 		this.identityNo = identityNo;
 		this.fullName = fullName;
-		accounts = new ArrayList<>();
+		accounts = new HashMap<>();
 	}
 
 	public String getFullName() {
@@ -35,51 +35,28 @@ public class Customer {
 	}
 
 	public List<Account> getAccounts() {
-		return Collections.unmodifiableList(accounts);
+		return new ArrayList<>(accounts.values());
 	}
 
 	public void addAccount(Account account) {
-		accounts.add(account);
+		accounts.put(account.getIban(),account);
 	}
 
 	public Optional<Account> getAccount(String iban) {
-		for (Account acc : accounts)
-			if (acc.getIban().equals(iban))
-				return Optional.of(acc);
-		return Optional.empty();
+		return Optional.ofNullable(accounts.get(iban));
 	}
 
 	public double getBalance() {
-		double sum = 0.0;
-		for (Account acc : accounts)
-			sum += acc.getBalance();
-		return sum;
-	}
-
-	public double getBalance8() {
-//		final int x[]= {0};
-		return accounts.stream().parallel()
-//				.map(a -> {x[0]++; return a;})
-				.mapToDouble(Account::getBalance).sum();
-	}
-
-	public double getBalance_8() {
-		Stream<Account> stream = accounts.stream();
-		if (accounts.size() > 1_000_000)
-			stream = stream.parallel();
-		return stream.mapToDouble(Account::getBalance).sum();
-	}
-
-	public Account getAccount(int index) {
-		return accounts.get(index);
+		return accounts.values().stream()
+		        .mapToDouble(Account::getBalance)
+			    .sum();
 	}
 
 	public Optional<Account> removeAccount(String iban) {
-		Optional<Account> acc = getAccount(iban);
-		if (acc.isPresent()) {
-			this.accounts.remove(acc.get());
-		}
-		return acc;
+		
+		return Optional.ofNullable(
+				accounts.remove(iban)
+		);
 	}
 
 	@Override
