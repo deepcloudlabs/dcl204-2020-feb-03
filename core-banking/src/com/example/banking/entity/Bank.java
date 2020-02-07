@@ -1,5 +1,6 @@
 package com.example.banking.entity;
 
+import java.io.Serializable;
 import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;
 import java.text.MessageFormat;
@@ -20,7 +21,7 @@ import java.util.ResourceBundle;
  * @author Binnur Kurt <binnur.kurt@gmail.com>
  *
  */
-public final class Bank {
+public final class Bank implements Serializable {
 	private final int id;
 	private String name;
 	private final Map<String, Customer> customers;

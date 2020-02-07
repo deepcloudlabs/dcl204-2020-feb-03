@@ -1,5 +1,10 @@
 package com.example.banking.app;
 
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.ObjectOutputStream;
 import java.util.Locale;
 
 import com.example.banking.entity.Account;
@@ -12,7 +17,7 @@ import com.example.banking.entity.Customer;
  *
  */
 public class BankingApp {
-	public static void main(String[] args) {
+	public static void main(String[] args) throws IOException {
 		Bank garanti = new Bank(1, "Garanti");
 		Customer jack = garanti.createCustomer("12345678910", "Jack Shephard");
 		jack.addAccount(new Account("TR2", 2_000));
@@ -23,6 +28,14 @@ public class BankingApp {
 		kate.addAccount(new Account("TR6", 6_000));
 		kate.addAccount(new Account("TR7", 7_000));
 		Locale tr = new Locale("TR", "tr");
-		garanti.generateReport(tr);
+		File file = new File("c:/tmp","garanti.backup");
+		try(FileOutputStream fos = 
+				new FileOutputStream(file);
+		ObjectOutputStream oos = 
+				new ObjectOutputStream(fos);){
+			oos.writeObject(garanti);			
+		}
+		System.out.println("Bank is saved to disk!");
+		
 	}
 }

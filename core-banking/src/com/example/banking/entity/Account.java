@@ -1,5 +1,7 @@
 package com.example.banking.entity;
 
+import java.io.Serializable;
+
 import com.example.banking.exception.InsufficientBalanceException;
 
 /**
@@ -7,7 +9,7 @@ import com.example.banking.exception.InsufficientBalanceException;
  * @author Binnur Kurt <binnur.kurt@gmail.com>
  *
  */
-public class Account extends Object {
+public class Account implements Serializable {
 	private final String iban;
 	double balance;
 	private static int numOfAccounts = 0;
